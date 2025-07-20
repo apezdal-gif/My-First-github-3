@@ -1,0 +1,126 @@
+!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Slap Battles</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    #arena {
+      width: 100%;
+      height: 400px;
+      background: #222;
+      position: relative;
+      overflow: hidden;
+      border-top: 4px solid #444;
+      border-bottom: 4px solid #444;
+      margin-top: 20px;
+    }
+    .fighter {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      bottom: 40px;
+      background: #00ffff;
+      border-radius: 50%;
+      font-size: 28px;
+      line-height: 100px;
+    }
+    #player {
+      left: 100px;
+      background: lime;
+    }
+    #enemy {
+      right: 100px;
+      background: crimson;
+    }
+    #info {
+      margin-top: 15px;
+      font-size: 20px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: yellow;
+      border: none;
+      color: black;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: orange;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🖐️ Slap Battles</h1>
+  <div id="info">Гравець: 100 HP | Ворог: 100 HP</div>
+  <button onclick="slap()">Дати ляпаса</button>
+
+  <div id="arena">
+    <div id="player" class="fighter">🙂</div>
+    <div id="enemy" class="fighter">😠</div>
+  </div>
+
+  <script>
+    let playerHP = 100;
+    let enemyHP = 100;
+
+    const info = document.getElementById('info');
+    const player = document.getElementById('player');
+    const enemy = document.getElementById('enemy');
+
+    function updateInfo() {
+      info.textContent = `Гравець: ${playerHP} HP | Ворог: ${enemyHP} HP`;
+    }
+
+    function slap() {
+      if (playerHP <= 0 || enemyHP <= 0) return;
+
+      // Анімація ляпасу
+      enemy.style.transform = 'translateX(-20px)';
+      setTimeout(() => enemy.style.transform = 'translateX(0)', 150);
+
+      // Ворог втрачає HP
+      let damage = Math.floor(Math.random() * 20) + 5;
+      enemyHP = Math.max(0, enemyHP - damage);
+      updateInfo();
+
+      // Перевірка перемоги
+      if (enemyHP <= 0) {
+        info.textContent = "🎉 Ти виграв! Ворог упав!";
+        enemy.textContent = "💀";
+        return;
+      }
+
+      // Контратака
+      setTimeout(enemyAttack, 800);
+    }
+
+    function enemyAttack() {
+      player.style.transform = 'translateX(20px)';
+      setTimeout(() => player.style.transform = 'translateX(0)', 150);
+
+      let damage = Math.floor(Math.random() * 15) + 5;
+      playerHP = Math.max(0, playerHP - damage);
+      updateInfo();
+
+      if (playerHP <= 0) {
+        info.textContent = "☠️ Поразка! Ворог переміг!";
+        player.textContent = "💀";
+      }
+    }
+  </script>
+
+</body>
+</html>
